@@ -31,29 +31,22 @@ column types before doing anything else.
 From there: pivot tables by category, region, model and colour, then a dashboard
 on top of them.
 
-Later I rebuilt the same numbers outside Excel. `backend/etl.py` reads the
-workbook into SQLite, and `backend/api.py` serves the aggregates over HTTP, so
-the same figures can drive a web page instead of living in one file. Both are
-standard library only — no pip install.
+## The queries
 
-## Run it
-
-```bash
-python backend/etl.py     # workbook -> SQLite
-python backend/api.py     # serves http://localhost:8000/api/...
-```
+`queries.sql` has every query behind the numbers above, with a note on each
+one explaining what it answers. Load the `Sales Data` sheet as a table named
+`sales` in any SQL tool and they run as-is.
 
 ## Files
 
 ```
-data/sales-dashboard.xlsx   the cleaned workbook and the dashboard
-backend/etl.py              reads the workbook into SQLite
-backend/api.py              serves the aggregated numbers
+data/sales-dashboard.xlsx   the cleaned workbook with the dashboard
+queries.sql                 the SQL behind every number here
 ```
 
 ## Tools
 
-Excel (pivot tables, Power Query), SQL, Python, SQLite
+Excel (pivot tables, Power Query), SQL
 
 ---
 Rakan Ahmed Al-Nusayri — [github.com/RaKaN-DaTa](https://github.com/RaKaN-DaTa)

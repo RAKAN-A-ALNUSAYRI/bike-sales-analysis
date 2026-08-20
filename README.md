@@ -1,53 +1,59 @@
-# Bike Sales Analysis Dashboard
-
-تحليل مبيعات درّاجات — 60,919 طلبًا، من التنظيف حتى لوحة تفاعلية.
+# Bike Sales Analysis
 
 ![preview](preview.jpg)
 
-**The question:** Where does the revenue actually come from — and where is
-it dangerously concentrated?
+A bike retailer's order history — 60,919 rows — cleaned up and turned into a
+dashboard that answers one question: where does the money actually come from?
 
-**What I did:**
-- Cleaned 60,919 raw order rows in Excel (found and removed a stray "Total"
-  summary row mixed into the raw data — a common real-world data-quality bug)
-- Built pivot tables by category, region, model, and colour
-- Rebuilt the dashboard from scratch with a Python ETL script + a small
-  local API (`backend/`, standard library only) so the same numbers can
-  power a live web dashboard, not just a static Excel sheet
-- The live, filterable version of this exact dashboard is embedded in my portfolio site (not yet published — coming soon)
+## What I found
 
-**What I found:**
-| Metric | Value |
+| | |
 |---|---|
-| Total revenue | $81.0M |
+| Revenue | $81.0M |
 | Orders | 60,919 |
 | Units sold | 214,516 |
 | Average order | $1,330 |
 
-Bikes alone carry **83% of total revenue**, and North America accounts for
-**84.4%** of it — growth is currently riding on two narrow bets (one product
-line, one region), which is the headline risk worth flagging to a business
-owner reading this dashboard.
+Bikes bring in 83% of the revenue, and North America brings in 84.4% of that.
+So the business is really two bets, not a diversified catalogue. Accessories and
+clothing look busy in the order count but barely register in revenue.
 
-**Tools:** Excel (Pivot Tables, Power Query), Python (stdlib `sqlite3`),
-SQL, a small self-built HTTP API
+If I were handing this to an owner, that concentration is the first slide, not
+the growth number.
 
-## Run it yourself
+## What I did
+
+Started in Excel. The raw export had a row where the Region column said "Total"
+and the Year column said 122021530 — a summary line that had been pasted into
+the data. Left in, it inflates every total. I removed it and re-checked the
+column types before doing anything else.
+
+From there: pivot tables by category, region, model and colour, then a dashboard
+on top of them.
+
+Later I rebuilt the same numbers outside Excel. `backend/etl.py` reads the
+workbook into SQLite, and `backend/api.py` serves the aggregates over HTTP, so
+the same figures can drive a web page instead of living in one file. Both are
+standard library only — no pip install.
+
+## Run it
 
 ```bash
-python backend/etl.py     # builds the SQLite database from the Excel file
-python backend/api.py     # serves it at http://localhost:8000/api/...
+python backend/etl.py     # workbook -> SQLite
+python backend/api.py     # serves http://localhost:8000/api/...
 ```
-
-No dependencies — pure Python standard library.
 
 ## Files
 
 ```
-data/sales-dashboard.xlsx   the cleaned workbook with the rebuilt dashboard
-backend/etl.py               reads the Excel file into SQLite
-backend/api.py                small local API serving the aggregated numbers
+data/sales-dashboard.xlsx   the cleaned workbook and the dashboard
+backend/etl.py              reads the workbook into SQLite
+backend/api.py              serves the aggregated numbers
 ```
 
+## Tools
+
+Excel (pivot tables, Power Query), SQL, Python, SQLite
+
 ---
-Rakan Ahmed Al-Nusayri · [portfolio](https://github.com/RaKaN-DaTa) · rakanalnsyry8@gmail.com
+Rakan Ahmed Al-Nusayri — [github.com/RaKaN-DaTa](https://github.com/RaKaN-DaTa)
